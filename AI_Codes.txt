@@ -1,0 +1,2581 @@
+--- START SLIP 1: slip 1.ipynb ---
+# Q1 Python program that demonstrates the hill climbing algorithm to find the maximum of a
+# mathematical function.(For example f(x) = -x^2 + 4x)
+import random
+
+# Define the function f(x) = -x^2 + 4x
+def f(x):
+    return -x**2 + 4*x
+
+# Hill Climbing Algorithm
+def hill_climbing(starting_point, step_size, max_iterations):
+    current_point = starting_point
+    current_value = f(current_point)
+
+    for iteration in range(max_iterations):
+        # Explore neighbors: Check the value of f(x) at nearby points
+        next_point = current_point + step_size if f(current_point + step_size) > current_value else current_point - step_size
+        next_value = f(next_point)
+        
+        if next_value > current_value:
+            # Move to the better point
+            current_point = next_point
+            current_value = next_value
+        else:
+            # Stop if no improvement can be made
+            break
+
+        print(f"Iteration {iteration + 1}: x = {current_point}, f(x) = {current_value}")
+
+    return current_point, current_value
+
+# Parameters for hill climbing
+starting_point = random.uniform(0, 5)  # Random starting point between 0 and 5
+step_size = 0.01                        # Small step size for climbing
+max_iterations = 10                   # Maximum number of iterations
+
+# Run hill climbing algorithm
+optimal_x, optimal_value = hill_climbing(starting_point, step_size, max_iterations)
+
+print(f"\nOptimal point: x = {optimal_x}")
+print(f"Maximum value: f(x) = {optimal_value}")
+
+# Write a Python program to implement Depth First Search algorithm. Refer the following graph
+# as an Input for the program. [Initial node=1,Goal node=8]
+
+# Depth First Search (DFS) implementation
+def dfs(graph, start, goal, visited=None, path=None):
+    if visited is None:
+        visited = set()  # Set to keep track of visited nodes
+    if path is None:
+        path = []  # List to maintain the path
+    
+    visited.add(start)
+    path.append(start)
+
+    print(f"Visited: {start}")
+
+    # If goal is reached, return the current path
+    if start == goal:
+        return path
+
+    # Recur for all the vertices adjacent to this vertex
+    for neighbor in graph[start]:
+        if neighbor not in visited:
+            result = dfs(graph, neighbor, goal, visited, path)
+            if result:
+                return result
+
+    # If no path found, backtrack
+    path.pop()
+    return None
+
+# Graph input using adjacency list representation
+graph = {
+    1: [2, 3],
+    2: [1, 4, 5],
+    3: [1, 6, 7],
+    4: [2, 8],
+    5: [2, 8],
+    6: [3, 8],
+    7: [3, 8],
+    8: [4, 5, 6, 7]
+}
+
+# Input: Initial node (1), Goal node (8)
+start_node = 1
+goal_node = 8
+
+# Perform DFS
+dfs_path = dfs(graph, start_node, goal_node)
+
+print(f"\nDFS path to reach node {goal_node}: {dfs_path}")
+
+
+
+--- END SLIP 1 ---
+
+--- START SLIP 2: slip 10.ipynb ---
+# Write Python program to implement crypt arithmetic problem
+# TWO+TWO=FOUR
+
+
+from itertools import permutations
+
+def is_valid_assignment(t, w, o, f, u, r):
+    # Check if the equation TWO + TWO = FOUR holds
+    two = t * 100 + w * 10 + o
+    four = f * 1000 + o * 100 + u * 10 + r
+    return (two + two) == four
+
+def find_solution():
+    # Letters involved
+    letters = 'TWOFRU'
+    
+    # Generate all permutations of the digits 0-9 for the 7 letters
+    for perm in permutations(range(10), len(letters)):
+        # Assign digits to letters
+        t, w, o, f, u, r = perm
+        
+        # Ensure T and F are not zero (as they are leading digits)
+        if t == 0 or f == 0:
+            continue
+        
+        if is_valid_assignment(t, w, o, f, u, r):
+            print(f'Solution found: T={t}, W={w}, O={o}, F={f}, U={u}, R={r}')
+            print(f'TWO = {t*100 + w*10 + o}')
+            print(f'FOUR = {f*1000 + o*100 + u*10 + r}')
+            return
+
+    print("No solution found.")
+
+def main():
+    find_solution()
+
+if __name__ == "__main__":
+    main()
+
+# Write a Python program to implement Simple Chatbot.
+
+import random
+
+# Simple chatbot responses
+responses = {
+    "greeting": ["Hello! How can I help you today?", "Hi there! What can I do for you?", "Greetings! How may I assist you?"],
+    "weather": ["I'm not sure about the weather, but it's always sunny in my world!", "I can't check the weather, but I hope it's nice outside!", "Weather? I prefer to talk about something else!"],
+    "farewell": ["Goodbye! Have a great day!", "See you later! Take care!", "Farewell! Hope to chat with you again!"],
+    "unknown": ["I'm sorry, I don't understand that.", "Could you please rephrase?", "I'm not sure how to respond to that."]
+}
+
+# Function to respond based on user input
+def get_response(user_input):
+    user_input = user_input.lower()
+    
+    if any(greet in user_input for greet in ["hi", "hello", "hey"]):
+        return random.choice(responses["greeting"])
+    elif "weather" in user_input:
+        return random.choice(responses["weather"])
+    elif any(farewell in user_input for farewell in ["bye", "goodbye", "see you"]):
+        return random.choice(responses["farewell"])
+    else:
+        return random.choice(responses["unknown"])
+
+# Main function to run the chatbot
+def main():
+    print("Welcome to the Simple Chatbot! Type 'exit' to end the conversation.")
+    
+    while True:
+        user_input = input("You: ")
+        
+        if user_input.lower() == "exit":
+            print("Chatbot: Goodbye! Have a great day!")
+            break
+        
+        response = get_response(user_input)
+        print(f"Chatbot: {response}")
+
+if __name__ == "__main__":
+    main()
+
+--- END SLIP 2 ---
+
+--- START SLIP 3: slip 11.ipynb ---
+# Write a python program using mean end analysis algorithmproblem of transforming a string of lowercase letters into another string.
+
+
+def mean_end_analysis(start, goal):
+    # Initialize the list of operations
+    operations = []
+    
+    # While the start string is not equal to the goal string
+    while start != goal:
+        # If the lengths are different, we can consider insertion or deletion
+        if len(start) < len(goal):
+            # Add the character from the goal that is missing in start
+            for char in goal:
+                if char not in start:
+                    operations.append(f"Insert '{char}'")
+                    start += char  # Simulating insertion
+                    break
+        elif len(start) > len(goal):
+            # Remove the last character of start
+            operations.append(f"Delete '{start[-1]}'")
+            start = start[:-1]  # Simulating deletion
+        else:
+            # If the lengths are equal, consider replacement
+            for i in range(len(start)):
+                if start[i] != goal[i]:
+                    operations.append(f"Replace '{start[i]}' with '{goal[i]}'")
+                    start = start[:i] + goal[i] + start[i+1:]  # Simulating replacement
+                    break
+
+        print(f"Current state: {start}")
+    
+    return operations
+
+def main():
+    start_string = "cat"
+    goal_string = "dog"
+    
+    print(f"Transforming '{start_string}' into '{goal_string}':")
+    operations = mean_end_analysis(start_string, goal_string)
+    
+    print("\nOperations to achieve transformation:")
+    for op in operations:
+        print(op)
+
+if __name__ == "__main__":
+    main()
+
+# Write a Python program to solve water jug problem. 2 jugs with capacity 5 gallon and 7 gallon are given with unlimited water supply respectively. The target to achieve is 4 gallon of water in second jug.
+
+from collections import deque
+
+# State is represented as (amount in 5-gallon jug, amount in 7-gallon jug)
+def water_jug_problem(capacity1, capacity2, target):
+    # Initialize a queue for BFS and a set to keep track of visited states
+    queue = deque()
+    visited = set()
+
+    # Start with both jugs empty
+    initial_state = (0, 0)
+    queue.append((initial_state, []))  # Append initial state and path
+    visited.add(initial_state)
+
+    while queue:
+        (jug1, jug2), path = queue.popleft()
+        path = path + [(jug1, jug2)]  # Add the current state to the path
+
+        # Check if we reached the target
+        if jug2 == target:
+            return path
+
+        # Possible actions
+        actions = [
+            (capacity1, jug2),  # Fill the 5-gallon jug
+            (jug1, capacity2),  # Fill the 7-gallon jug
+            (0, jug2),          # Empty the 5-gallon jug
+            (jug1, 0),          # Empty the 7-gallon jug
+            (min(jug1 + jug2, capacity1), jug2 - (min(jug1 + jug2, capacity1) - jug1)),  # Pour 7-gallon into 5-gallon
+            (jug1 - (min(jug1 + jug2, capacity2) - jug2), min(jug1 + jug2, capacity2))   # Pour 5-gallon into 7-gallon
+        ]
+
+        # Process each action
+        for new_jug1, new_jug2 in actions:
+            new_state = (new_jug1, new_jug2)
+            if new_state not in visited:
+                visited.add(new_state)
+                queue.append((new_state, path))
+
+    return None  # Return None if no solution is found
+
+def print_solution(solution):
+    if solution:
+        print("Steps to achieve target:")
+        for step in solution:
+            print(f"5-gallon jug: {step[0]}, 7-gallon jug: {step[1]}")
+    else:
+        print("No solution exists.")
+
+def main():
+    capacity1 = 5  # Capacity of the first jug
+    capacity2 = 7  # Capacity of the second jug
+    target = 4     # Target amount in the second jug
+
+    solution = water_jug_problem(capacity1, capacity2, target)
+    print_solution(solution)
+
+if __name__ == "__main__":
+    main()
+
+
+
+--- END SLIP 3 ---
+
+--- START SLIP 4: slip 12.ipynb ---
+# Write a python program to generate Calendar for the given month and year?.
+
+import calendar
+
+def generate_calendar(year, month):
+    # Create a calendar object
+    cal = calendar.TextCalendar(calendar.SUNDAY)
+    
+    # Generate the calendar for the given month and year
+    month_calendar = cal.formatmonth(year, month)
+    
+    return month_calendar
+
+# Input: year and month
+year = int(input("Enter year: "))
+month = int(input("Enter month (1-12): "))
+
+# Generate and print the calendar
+print(f"\nCalendar for {calendar.month_name[month]} {year}:\n")
+print(generate_calendar(year, month))
+
+# Write a Python program to simulate 4-Queens problem.
+
+def is_safe(board, row, col):
+    # Check this column on the upper side
+    for i in range(row):
+        if board[i][col] == 'Q':
+            return False
+
+    # Check the upper diagonal on the left side
+    for i, j in zip(range(row, -1, -1), range(col, -1, -1)):
+        if j < 0: break  # Prevent going out of bounds
+        if board[i][j] == 'Q':
+            return False
+
+    # Check the upper diagonal on the right side
+    for i, j in zip(range(row, -1, -1), range(col, len(board))):
+        if j >= len(board): break  # Prevent going out of bounds
+        if board[i][j] == 'Q':
+            return False
+
+    return True
+
+def solve_n_queens_util(board, row):
+    if row >= len(board):
+        # All queens are placed, print the solution
+        print_board(board)
+        return
+
+    for col in range(len(board)):
+        if is_safe(board, row, col):
+            # Place the queen
+            board[row][col] = 'Q'
+            # Recur to place the rest of the queens
+            solve_n_queens_util(board, row + 1)
+            # Backtrack by removing the queen
+            board[row][col] = '.'
+
+def print_board(board):
+    for row in board:
+        print(" ".join(row))
+    print()
+
+def solve_n_queens(n):
+    board = [['.' for _ in range(n)] for _ in range(n)]
+    solve_n_queens_util(board, 0)
+
+if __name__ == "__main__":
+    n = 4  # Size of the board (4x4)
+    print(f"Solutions for {n}-Queens Problem:")
+    solve_n_queens(n)
+
+
+--- END SLIP 4 ---
+
+--- START SLIP 5: slip 13.ipynb ---
+# Write a Python program to implement Mini-Max Algorithm.
+
+import math
+ 
+def minimax (curDepth, nodeIndex,
+             maxTurn, scores, 
+             targetDepth):
+ 
+    # base case : targetDepth reached
+    if (curDepth == targetDepth): 
+        return scores[nodeIndex]
+     
+    if (maxTurn):
+        return max(minimax(curDepth + 1, nodeIndex * 2, 
+                    False, scores, targetDepth), 
+                   minimax(curDepth + 1, nodeIndex * 2 + 1, 
+                    False, scores, targetDepth))
+     
+    else:
+        return min(minimax(curDepth + 1, nodeIndex * 2, 
+                     True, scores, targetDepth), 
+                   minimax(curDepth + 1, nodeIndex * 2 + 1, 
+                     True, scores, targetDepth))
+     
+# Driver code
+scores = [3, 5, 2, 9, 12, 5, 23, 23]
+ 
+treeDepth = math.log(len(scores), 2)
+ 
+print("The optimal value is : ", end = "")
+print(minimax(0, 0, True, scores, treeDepth))
+# Write a Python program to simulate 8-Queens problem.
+
+def is_safe(board, row, col):
+    # Check this column on the upper side
+    for i in range(row):
+        if board[i][col] == 'Q':
+            return False
+
+    # Check the upper diagonal on the left side
+    for i, j in zip(range(row, -1, -1), range(col, -1, -1)):
+        if j < 0: break  # Prevent going out of bounds
+        if board[i][j] == 'Q':
+            return False
+
+    # Check the upper diagonal on the right side
+    for i, j in zip(range(row, -1, -1), range(col, len(board))):
+        if j >= len(board): break  # Prevent going out of bounds
+        if board[i][j] == 'Q':
+            return False
+
+    return True
+
+def solve_n_queens_util(board, row):
+    if row >= len(board):
+        # All queens are placed, print the solution
+        print_board(board)
+        return
+
+    for col in range(len(board)):
+        if is_safe(board, row, col):
+            # Place the queen
+            board[row][col] = 'Q'
+            # Recur to place the rest of the queens
+            solve_n_queens_util(board, row + 1)
+            # Backtrack by removing the queen
+            board[row][col] = '.'
+
+def print_board(board):
+    for row in board:
+        print(" ".join(row))
+    print()
+
+def solve_n_queens(n):
+    board = [['.' for _ in range(n)] for _ in range(n)]
+    solve_n_queens_util(board, 0)
+
+if __name__ == "__main__":
+    n = 8  # Size of the board (4x4)
+    print(f"Solutions for {n}-Queens Problem:")
+    solve_n_queens(n)
+
+
+--- END SLIP 5 ---
+
+--- START SLIP 6: slip 14.ipynb ---
+# Write a python program to sort the sentence in alphabetical order?
+
+def sort_sentence(sentence):
+    # Split the sentence into words
+    words = sentence.split()
+    # Sort the words in alphabetical order
+    sorted_words = sorted(words)
+    # Join the sorted words back into a sentence
+    sorted_sentence = ' '.join(sorted_words)
+    return sorted_sentence
+
+def main():
+    # Input sentence from the user
+    sentence = input("Enter a sentence: ")
+    sorted_sentence = sort_sentence(sentence)
+    print("Sorted sentence in alphabetical order:")
+    print(sorted_sentence)
+
+if __name__ == "__main__":
+    main()
+
+# Write a Python program to simulate n-Queens problem.
+
+def is_safe(board, row, col):
+    # Check this column on the upper side
+    for i in range(row):
+        if board[i][col] == 'Q':
+            return False
+
+    # Check the upper diagonal on the left side
+    for i, j in zip(range(row, -1, -1), range(col, -1, -1)):
+        if j < 0: break  # Prevent going out of bounds
+        if board[i][j] == 'Q':
+            return False
+
+    # Check the upper diagonal on the right side
+    for i, j in zip(range(row, -1, -1), range(col, len(board))):
+        if j >= len(board): break  # Prevent going out of bounds
+        if board[i][j] == 'Q':
+            return False
+
+    return True
+
+def solve_n_queens_util(board, row):
+    if row >= len(board):
+        # All queens are placed, print the solution
+        print_board(board)
+        return
+
+    for col in range(len(board)):
+        if is_safe(board, row, col):
+            # Place the queen
+            board[row][col] = 'Q'
+            # Recur to place the rest of the queens
+            solve_n_queens_util(board, row + 1)
+            # Backtrack by removing the queen
+            board[row][col] = '.'
+
+def print_board(board):
+    for row in board:
+        print(" ".join(row))
+    print()
+
+def solve_n_queens(n):
+    board = [['.' for _ in range(n)] for _ in range(n)]
+    solve_n_queens_util(board, 0)
+
+if __name__ == "__main__":
+    n = 4  # Size of the board (4x4)
+    print(f"Solutions for {n}-Queens Problem:")
+    solve_n_queens(n)
+
+
+--- END SLIP 6 ---
+
+--- START SLIP 7: slip 15.ipynb ---
+# Write a Program to Implement Monkey Banana Problem using Python
+
+class State:
+    def __init__(self, monkey_height, banana_height, has_banana):
+        self.monkey_height = monkey_height  # Height of the monkey
+        self.banana_height = banana_height    # Height of the bananas
+        self.has_banana = has_banana          # Whether the monkey has the banana
+
+    def is_goal(self):
+        # The goal is to have the banana
+        return self.has_banana
+
+    def __str__(self):
+        return f'Monkey height: {self.monkey_height}, Banana height: {self.banana_height}, Has banana: {self.has_banana}'
+
+
+def actions(state):
+    # Define possible actions
+    possible_actions = []
+    
+    # Action: Climb up
+    if state.monkey_height < state.banana_height:
+        possible_actions.append('Climb Up')
+
+    # Action: Climb down
+    if state.monkey_height > 0:
+        possible_actions.append('Climb Down')
+
+    # Action: Grab banana
+    if state.monkey_height >= state.banana_height and not state.has_banana:
+        possible_actions.append('Grab Banana')
+
+    return possible_actions
+
+
+def transition(state, action):
+    # Perform the action and return the new state
+    new_state = State(state.monkey_height, state.banana_height, state.has_banana)
+
+    if action == 'Climb Up':
+        new_state.monkey_height += 1
+    elif action == 'Climb Down':
+        new_state.monkey_height -= 1
+    elif action == 'Grab Banana':
+        new_state.has_banana = True
+
+    return new_state
+
+
+def breadth_first_search(initial_state):
+    from collections import deque
+
+    queue = deque([initial_state])  # Use a queue for BFS
+    visited = set()  # To keep track of visited states
+
+    while queue:
+        current_state = queue.popleft()  # Get the next state from the queue
+
+        if current_state.is_goal():
+            return current_state  # Return the goal state if found
+
+        # Mark the current state as visited
+        visited.add((current_state.monkey_height, current_state.has_banana))
+
+        # Explore actions and add new states to the queue
+        for action in actions(current_state):
+            new_state = transition(current_state, action)
+
+            if (new_state.monkey_height, new_state.has_banana) not in visited:
+                queue.append(new_state)
+
+    return None  # Return None if no solution is found
+
+
+def main():
+    initial_state = State(monkey_height=0, banana_height=3, has_banana=False)
+
+    print("Initial State:")
+    print(initial_state)
+
+    solution = breadth_first_search(initial_state)
+
+    if solution:
+        print("\nGoal State Reached:")
+        print(solution)
+    else:
+        print("\nNo solution found.")
+
+
+if __name__ == "__main__":
+    main()
+
+# Write a program to implement Iterative Deepening DFS algorithm.    [20 Marks ]
+# [ Goal Node =G]
+
+def dfs(graph, start, goal, depth, visited=None, path=None):
+    if visited is None:
+        visited = set()  # Set to keep track of visited nodes
+    if path is None:
+        path = []  # List to maintain the path
+
+    visited.add(start)
+    path.append(start)
+
+    # If goal is reached, return the current path
+    if start == goal:
+        return path
+
+    # If the current depth limit is reached, backtrack
+    if depth == 0:
+        path.pop()
+        return None
+
+    # Recur for all the vertices adjacent to this vertex
+    for neighbor in graph[start]:
+        if neighbor not in visited:
+            result = dfs(graph, neighbor, goal, depth - 1, visited, path)
+            if result:
+                return result
+
+    # If no path found, backtrack
+    path.pop()
+    return None
+
+def iterative_deepening_dfs(graph, start, goal):
+    depth = 0
+    while True:
+        visited = set()  # Reset visited for each depth iteration
+        path = dfs(graph, start, goal, depth, visited)
+        if path:
+            return path  # Return the path if found
+        depth += 1  # Increase the depth limit
+
+# Graph input using adjacency list representation
+graph = {
+    'A': ['B', 'C'],
+    'B': ['D', 'F'],
+    'C': ['F', 'G'],
+    'D': ['H', 'I'],
+    'F': ['K'],
+    'E': [],
+    'H': [],
+    'I': [],
+    'G': [],
+}
+
+# Input: Initial node (A), Goal node (G)
+start_node = 'A'
+goal_node = 'G'
+
+# Perform IDDFS
+iddfs_path = iterative_deepening_dfs(graph, start_node, goal_node)
+
+print(f"\nIDDFS path to reach node {goal_node}: {iddfs_path}")
+
+
+--- END SLIP 7 ---
+
+--- START SLIP 8: slip 16.ipynb ---
+# Write a Program to Implement Tower of Hanoi using Python
+
+def tower_of_hanoi(n, source, destination, auxiliary):
+    if n == 1:
+        print(f"Move disk 1 from {source} to {destination}")
+        return
+    # Move n-1 disks from source to auxiliary, so they are out of the way
+    tower_of_hanoi(n - 1, source, auxiliary, destination)
+    # Move the nth disk from source to destination
+    print(f"Move disk {n} from {source} to {destination}")
+    # Move the n-1 disks that we left on auxiliary to destination
+    tower_of_hanoi(n - 1, auxiliary, destination, source)
+
+def main():
+    n = int(input("Enter the number of disks: "))
+    print("The sequence of moves involved in the Tower of Hanoi are:")
+    tower_of_hanoi(n, 'A', 'C', 'B')  # A, B and C are the names of rods
+
+if __name__ == "__main__":
+    main()
+
+
+# Write a Python program to solve tic-tac-toe problem.
+
+import math
+
+# Constants for players
+PLAYER_X = 'X'
+PLAYER_O = 'O'
+EMPTY = ' '
+
+# Function to print the current board
+def print_board(board):
+    chars = {PLAYER_X: 'X', PLAYER_O: 'O', EMPTY: ' '}
+    print("\nCurrent Board:")
+    for row in board:
+        for cell in row:
+            ch = chars[cell]  # Use the character mapping
+            print(f'| {ch} |', end='')  # Print the cell with boundaries
+        print('\n' + '---------------')  # Print row separator
+    print('===============')  # Print board footer
+
+# Check if the game is over and return the result
+def check_winner(board):
+    # Check rows, columns, and diagonals for a win
+    for i in range(3):
+        if board[i][0] == board[i][1] == board[i][2] != EMPTY:
+            return board[i][0]
+        if board[0][i] == board[1][i] == board[2][i] != EMPTY:
+            return board[0][i]
+
+    if board[0][0] == board[1][1] == board[2][2] != EMPTY:
+        return board[0][0]
+    if board[0][2] == board[1][1] == board[2][0] != EMPTY:
+        return board[0][2]
+
+    # Check for draw
+    if all(cell != EMPTY for row in board for cell in row):
+        return 'Draw'
+
+    return None  # Game is not over
+
+# Function for a player to make a move
+def player_move(board, player):
+    while True:
+        try:
+            move = int(input(f"Player {player}, enter your move (1-9): ")) - 1
+            row, col = divmod(move, 3)
+            if board[row][col] == EMPTY:
+                board[row][col] = player
+                break
+            else:
+                print("This position is already taken. Try again.")
+        except (ValueError, IndexError):
+            print("Invalid move. Please enter a number between 1 and 9.")
+
+# Main game loop
+def main():
+    board = [[EMPTY] * 3 for _ in range(3)]
+    print("Welcome to Tic-Tac-Toe!")
+    print_board(board)
+
+    current_player = PLAYER_X  # Start with Player X
+
+    while True:
+        player_move(board, current_player)
+        print_board(board)
+        winner = check_winner(board)
+        if winner:
+            break
+        # Switch players
+        current_player = PLAYER_O if current_player == PLAYER_X else PLAYER_X
+
+    if winner == PLAYER_X:
+        print("Congratulations! Player X wins!")
+    elif winner == PLAYER_O:
+        print("Congratulations! Player O wins!")
+    else:
+        print("It's a draw! Well played!")
+
+if __name__ == "__main__":
+    main()
+
+
+--- END SLIP 8 ---
+
+--- START SLIP 9: slip 17.ipynb ---
+# Q1 Python program that demonstrates the hill climbing algorithm to find the maximum of a
+# mathematical function.(For example f(x) = -x^2 + 4x)
+import random
+
+# Define the function f(x) = -x^2 + 4x
+def f(x):
+    return -x**2 + 4*x
+
+# Hill Climbing Algorithm
+def hill_climbing(starting_point, step_size, max_iterations):
+    current_point = starting_point
+    current_value = f(current_point)
+
+    for iteration in range(max_iterations):
+        # Explore neighbors: Check the value of f(x) at nearby points
+        next_point = current_point + step_size if f(current_point + step_size) > current_value else current_point - step_size
+        next_value = f(next_point)
+        
+        if next_value > current_value:
+            # Move to the better point
+            current_point = next_point
+            current_value = next_value
+        else:
+            # Stop if no improvement can be made
+            break
+
+        print(f"Iteration {iteration + 1}: x = {current_point}, f(x) = {current_value}")
+
+    return current_point, current_value
+
+# Parameters for hill climbing
+starting_point = random.uniform(0, 5)  # Random starting point between 0 and 5
+step_size = 0.01                        # Small step size for climbing
+max_iterations = 10                   # Maximum number of iterations
+
+# Run hill climbing algorithm
+optimal_x, optimal_value = hill_climbing(starting_point, step_size, max_iterations)
+
+print(f"\nOptimal point: x = {optimal_x}")
+print(f"Maximum value: f(x) = {optimal_value}")
+
+# Write a Python program to implement A* algorithm. Refer the following graph as an Input for
+# the program.
+
+from queue import PriorityQueue
+
+# Define the graph as an adjacency list with weights
+graph = {
+    'A': [('B', 9), ('C', 4), ('D', 7)],
+    'B': [('A', 9), ('E', 11)],
+    'C': [('A', 4), ('E', 17), ('F', 12), ('D', 7)],
+    'D': [('A', 7), ('C', 7), ('F', 14)],
+    'E': [('B', 11), ('C', 17), ('G', 5)],
+    'F': [('C', 12), ('D', 14), ('G', 9)],
+    'G': []  # Goal node has no outgoing edges
+}
+
+# Define heuristic values (h values) for each node to goal 'G'
+heuristic = {
+    'A': 21,
+    'B': 14,
+    'C': 18,
+    'D': 18,
+    'E': 5,
+    'F': 8,
+    'G': 0  # Heuristic value for goal node is 0
+}
+
+# A* Algorithm function
+def a_star(start, goal):
+    # Priority queue to keep track of nodes with (f-score, node)
+    open_set = PriorityQueue()
+    open_set.put((0, start))  # Initial cost is zero for the start node
+
+    # Dictionary to keep track of the lowest cost to reach each node
+    g_cost = {node: float('inf') for node in graph}
+    g_cost[start] = 0
+
+    # Dictionary to keep track of the path
+    came_from = {start: None}
+
+    while not open_set.empty():
+        # Get the node with the lowest f-score
+        current_f_score, current = open_set.get()
+
+        # If goal is reached, reconstruct the path
+        if current == goal:
+            path = []
+            while current:
+                path.append(current)
+                current = came_from[current]
+            return path[::-1]  # Return reversed path from start to goal
+
+        # Explore neighbors
+        for neighbor, cost in graph[current]:
+            # Calculate tentative g-score for the neighbor
+            tentative_g_score = g_cost[current] + cost
+
+            if tentative_g_score < g_cost[neighbor]:  # Found a better path
+                came_from[neighbor] = current
+                g_cost[neighbor] = tentative_g_score
+                f_score = tentative_g_score + heuristic[neighbor]
+                open_set.put((f_score, neighbor))
+
+    return None  # Return None if there's no path from start to goal
+
+# Run the A* algorithm and print the path
+start_node = 'A'
+goal_node = 'G'
+path = a_star(start_node, goal_node)
+print("Path from {} to {}: {}".format(start_node, goal_node, path))
+
+
+
+--- END SLIP 9 ---
+
+--- START SLIP 10: slip 18.ipynb ---
+# Write a python program to remove stop words for a given passage from a text file using NLTK?.
+
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+
+
+
+# Function to remove stop words from a text
+def remove_stop_words(file_path):
+    # Load stop words
+    stop_words = set(stopwords.words('english'))
+
+    # Read the passage from the text file
+    with open(file_path, 'r') as file:
+        text = file.read()
+
+    # Tokenize the text
+    words = word_tokenize(text)
+
+    # Filter out stop words
+    filtered_words = [word for word in words if word.lower() not in stop_words]
+
+    # Join the filtered words back into a string
+    filtered_text = ' '.join(filtered_words)
+
+    return filtered_text
+
+# Specify the path to your text file
+file_path = 'text.txt'  # Update this path
+
+# Remove stop words and print the result
+result = remove_stop_words(file_path)
+print("Filtered Text:")
+print(result)
+
+# Implement a system that performs arrangement of some set of objects in a room. Assume that
+# you have only 5 rectangular, 4 square-shaped objects. Use A* approach for the placement of
+# the objects in room for efficient space utilisation. Assume suitable heuristic, and dimensions of
+# objects and rooms. (Informed Search)
+
+import heapq
+
+class Object:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+class State:
+    def __init__(self, placed_objects, room_grid):
+        self.placed_objects = placed_objects  # List of placed objects
+        self.room_grid = room_grid  # 2D grid representing room occupancy
+        self.g = len(placed_objects)  # Cost to reach this state
+        self.h = heuristic(placed_objects, room_width, room_height)  # Heuristic value
+        self.f = self.g + self.h  # Total cost
+
+    def __lt__(self, other):
+        return self.f < other.f  # Compare for priority queue
+
+def heuristic(placed_objects, room_width, room_height):
+    total_area = room_width * room_height
+    occupied_area = sum(obj.width * obj.height for obj in placed_objects)
+    return total_area - occupied_area
+
+def generate_next_states(state, objects):
+    next_states = []
+    for obj in objects:
+        # Try placing the object in different positions in the room
+        for x in range(room_width - obj.width + 1):
+            for y in range(room_height - obj.height + 1):
+                # Check if space is free
+                if all(state.room_grid[i][j] == 0 for i in range(x, x + obj.width) for j in range(y, y + obj.height)):
+                    # Create a new state
+                    new_grid = [row[:] for row in state.room_grid]  # Copy current grid
+                    for i in range(x, x + obj.width):
+                        for j in range(y, y + obj.height):
+                            new_grid[i][j] = 1  # Mark as occupied
+                    next_states.append(State(state.placed_objects + [obj], new_grid))
+    return next_states
+
+def a_star(objects, room_width, room_height):
+    initial_state = State([], [[0] * room_height for _ in range(room_width)])
+    open_set = []
+    heapq.heappush(open_set, initial_state)
+
+    while open_set:
+        current_state = heapq.heappop(open_set)
+
+        # Check if goal state (all objects placed)
+        if len(current_state.placed_objects) == len(objects):
+            return current_state.placed_objects  # Return the final arrangement
+
+        # Generate next states
+        next_states = generate_next_states(current_state, objects)
+        for next_state in next_states:
+            heapq.heappush(open_set, next_state)
+
+    return None  # No solution found
+
+# Define objects and room dimensions
+objects = [
+    Object(2, 3), Object(1, 4), Object(3, 2), Object(2, 2), Object(4, 1), 
+    Object(2, 2), Object(2, 2), Object(3, 3), Object(3, 3)
+]
+room_width, room_height = 10, 10
+
+# Execute A* algorithm
+result = a_star(objects, room_width, room_height)
+if result:
+    print("Objects placed successfully:", result)
+else:
+    print("No valid arrangement found.")
+
+
+
+
+--- END SLIP 10 ---
+
+--- START SLIP 11: slip 19.ipynb ---
+# Write a program to implement Hangman game using python.
+# Description:
+# Hangman is a classic word-guessing game. The user should guess the word correctly by
+# entering alphabets of the user choice. The Program will get input as single alphabet from the
+# user and it will matchmaking with the alphabets in the original
+
+import random
+
+def hangman():
+    words = ['python', 'hangman', 'programming', 'challenge', 'development']
+    chosen_word = random.choice(words)
+    guessed_letters = []
+    attempts = 6
+    word_completion = '_' * len(chosen_word)
+    
+    print("Welcome to Hangman!")
+    
+    while attempts > 0:
+        print("\nWord to guess: " + ' '.join(word_completion))
+        print(f"Guessed letters: {' '.join(guessed_letters)}")
+        print(f"Attempts remaining: {attempts}")
+
+        guess = input("Please enter a single letter: ").lower()
+
+        if len(guess) != 1 or not guess.isalpha():
+            print("Invalid input. Please enter a single alphabet.")
+            continue
+        
+        if guess in guessed_letters:
+            print("You've already guessed that letter. Try again.")
+            continue
+        
+        guessed_letters.append(guess)
+
+        if guess in chosen_word:
+            print(f"Good guess! '{guess}' is in the word.")
+            word_completion = ''.join([guess if chosen_word[i] == guess else word_completion[i] for i in range(len(chosen_word))])
+        else:
+            print(f"Sorry, '{guess}' is not in the word.")
+            attempts -= 1
+
+        if '_' not in word_completion:
+            print(f"\nCongratulations! You've guessed the word: {chosen_word}")
+            break
+    else:
+        print(f"\nGame over! The word was: {chosen_word}")
+
+if __name__ == "__main__":
+    hangman()
+
+
+
+# Write a Python program to implement A* algorithm. Refer the following graph as an Input for
+# the program.
+
+from queue import PriorityQueue
+
+# Define the graph as an adjacency list with weights
+graph = {
+    'A': [('B', 2), ('E', 3)],
+    'B': [('A', 2), ('F', 9),('C', 1)],
+    'C': [('B', 1)],
+    'D': [('E', 6),('F', 1)],
+    'E': [('A', 3), ('D', 6)],
+    'F': [('B', 9), ('D', 1)],
+    'G': []  # Goal node has no outgoing edges
+}
+
+# Define heuristic values (h values) for each node to goal 'G'
+heuristic = {
+    'A': 11,
+    'B': 6,
+    'C': 99,
+    'D': 1,
+    'E': 7,
+    'F': 0,
+}
+
+# A* Algorithm function
+def a_star(start, goal):
+    # Priority queue to keep track of nodes with (f-score, node)
+    open_set = PriorityQueue()
+    open_set.put((0, start))  # Initial cost is zero for the start node
+
+    # Dictionary to keep track of the lowest cost to reach each node
+    g_cost = {node: float('inf') for node in graph}
+    g_cost[start] = 0
+
+    # Dictionary to keep track of the path
+    came_from = {start: None}
+
+    while not open_set.empty():
+        # Get the node with the lowest f-score
+        current_f_score, current = open_set.get()
+
+        # If goal is reached, reconstruct the path
+        if current == goal:
+            path = []
+            while current:
+                path.append(current)
+                current = came_from[current]
+            return path[::-1]  # Return reversed path from start to goal
+
+        # Explore neighbors
+        for neighbor, cost in graph[current]:
+            # Calculate tentative g-score for the neighbor
+            tentative_g_score = g_cost[current] + cost
+
+            if tentative_g_score < g_cost[neighbor]:  # Found a better path
+                came_from[neighbor] = current
+                g_cost[neighbor] = tentative_g_score
+                f_score = tentative_g_score + heuristic[neighbor]
+                open_set.put((f_score, neighbor))
+
+    return None  # Return None if there's no path from start to goal
+
+# Run the A* algorithm and print the path
+start_node = 'A'
+goal_node = 'F'
+path = a_star(start_node, goal_node)
+print("Path from {} to {}: {}".format(start_node, goal_node, path))
+
+
+--- END SLIP 11 ---
+
+--- START SLIP 12: slip 2.ipynb ---
+# Write a python program to generate Calendar for the given month and year?.
+
+import calendar
+
+def generate_calendar(year, month):
+    # Create a calendar object
+    cal = calendar.TextCalendar(calendar.SUNDAY)
+    
+    # Generate the calendar for the given month and year
+    month_calendar = cal.formatmonth(year, month)
+    
+    return month_calendar
+
+# Input: year and month
+year = int(input("Enter year: "))
+month = int(input("Enter month (1-12): "))
+
+# Generate and print the calendar
+print(f"\nCalendar for {calendar.month_name[month]} {year}:\n")
+print(generate_calendar(year, month))
+
+# Write a Python program to implement Depth First Search algorithm. Refer the following graph
+# as an Input for the program.[Initial node=1,Goal node=7].
+
+# Depth First Search (DFS) implementation
+def dfs(graph, start, goal, visited=None, path=None):
+    if visited is None:
+        visited = set()  # Set to keep track of visited nodes
+    if path is None:
+        path = []  # List to maintain the path
+    
+    visited.add(start)
+    path.append(start)
+
+    print(f"Visited: {start}")
+
+    # If goal is reached, return the current path
+    if start == goal:
+        return path
+
+    # Recur for all the vertices adjacent to this vertex
+    for neighbor in graph[start]:
+        if neighbor not in visited:
+            result = dfs(graph, neighbor, goal, visited, path)
+            if result:
+                return result
+
+    # If no path found, backtrack
+    path.pop()
+    return None
+
+# Graph input using adjacency list representation
+graph = {
+    1: [2, 3],
+    2: [4],
+    3: [2],
+    4: [5, 6],
+    5: [3, 7],
+    6: [],
+    7: [6],
+}
+
+# Input: Initial node (1), Goal node (8)
+start_node = 1
+goal_node = 7
+
+
+# Perform DFS
+dfs_path = dfs(graph, start_node, goal_node)
+
+print(f"\nDFS path to reach node {goal_node}: {dfs_path}")
+
+
+
+--- END SLIP 12 ---
+
+--- START SLIP 13: slip 20.ipynb ---
+
+# Write a Python program to implement Mini-Max Algorithm.
+
+import math
+ 
+def minimax (curDepth, nodeIndex,
+             maxTurn, scores, 
+             targetDepth):
+ 
+    # base case : targetDepth reached
+    if (curDepth == targetDepth): 
+        return scores[nodeIndex]
+     
+    if (maxTurn):
+        return max(minimax(curDepth + 1, nodeIndex * 2, 
+                    False, scores, targetDepth), 
+                   minimax(curDepth + 1, nodeIndex * 2 + 1, 
+                    False, scores, targetDepth))
+     
+    else:
+        return min(minimax(curDepth + 1, nodeIndex * 2, 
+                     True, scores, targetDepth), 
+                   minimax(curDepth + 1, nodeIndex * 2 + 1, 
+                     True, scores, targetDepth))
+     
+# Driver code
+scores = [3, 5, 2, 9, 12, 5, 23, 23]
+ 
+treeDepth = math.log(len(scores), 2)
+ 
+print("The optimal value is : ", end = "")
+print(minimax(0, 0, True, scores, treeDepth))
+# Build a bot which provides all the information related to you in college
+
+college_info = {
+    "name": "XYZ College",
+    "location": "123 College Ave, City, Country",
+    "history": "Founded in 1990, XYZ College has been a leader in education.",
+    "courses": ["Computer Science", "Business Administration", "Mechanical Engineering"],
+    "admission_requirements": "High school diploma, entrance exam.",
+    "important_dates": {
+        "registration": "August 1, 2024",
+        "exams": "December 15, 2024",
+    },
+    "facilities": ["Library", "Computer Lab", "Sports Complex"],
+    "events": ["Annual Day", "Tech Fest", "Cultural Fest"],
+    "faq": {
+        "What is the college's ranking?": "XYZ College is ranked in the top 100 colleges in the country.",
+        "Does the college offer scholarships?": "Yes, we offer various scholarships based on merit and need."
+    }
+}
+
+# Define the function to handle user queries
+def college_bot(query):
+    query = query.lower()
+    
+    if "name" in query:
+        return college_info["name"]
+    elif "location" in query:
+        return college_info["location"]
+    elif "history" in query:
+        return college_info["history"]
+    elif "courses" in query:
+        return ", ".join(college_info["courses"])
+    elif "admission" in query:
+        return college_info["admission_requirements"]
+    elif "important dates" in query:
+        return f"Registration: {college_info['important_dates']['registration']}, Exams: {college_info['important_dates']['exams']}"
+    elif "facilities" in query:
+        return ", ".join(college_info["facilities"])
+    elif "events" in query:
+        return ", ".join(college_info["events"])
+    elif "faq" in query:
+        return "\n".join([f"{q}: {a}" for q, a in college_info["faq"].items()])
+    else:
+        return "I'm sorry, I didn't understand that. Please ask about college name, location, courses, etc."
+
+# Main interaction loop
+while True:
+    user_input = input("Ask me anything about the college (type 'exit' to stop): ")
+    if user_input.lower() == 'exit':
+        print("Thank you for using the college information bot!")
+        break
+    response = college_bot(user_input)
+    print(response)
+
+
+--- END SLIP 13 ---
+
+--- START SLIP 14: slip 21.ipynb ---
+# Write a python program to remove punctuations from the given string?
+
+import string
+
+def remove_punctuation(input_string):
+    # Create a translation table that maps punctuation to None
+    translator = str.maketrans('', '', string.punctuation)
+    
+    # Use the translation table to remove punctuation from the string
+    return input_string.translate(translator)
+
+# Example input
+input_string = "Hello, World! How's it going? Let's remove: punctuation."
+clean_string = remove_punctuation(input_string)
+
+print(f"Original String: {input_string}")
+print(f"String without punctuation: {clean_string}")
+# Write Python program to implement crypt arithmetic problem
+# GO + TO = OUT
+
+
+from itertools import permutations
+
+def is_valid_assignment(g, o, t, u):
+    # Calculate the numeric values of GO, TO, and OUT
+    go = g * 10 + o
+    to = t * 10 + o
+    out = o * 100 + u * 10 + t
+    
+    # Check if the equation GO + TO = OUT holds
+    return (go + to) == out
+
+def find_solution():
+    # Letters involved in the equation
+    letters = 'GOTU'
+    
+    # Generate all permutations of the digits 0-9 for the 4 letters
+    for perm in permutations(range(10), len(letters)):
+        # Assign digits to letters
+        g, o, t, u = perm
+        
+        # Ensure G and T are not zero (as they are leading digits)
+        if g == 0 or t == 0:
+            continue
+        
+        if is_valid_assignment(g, o, t, u):
+            print(f'Solution found: G={g}, O={o}, T={t}, U={u}')
+            print(f'GO = {g*10 + o}')
+            print(f'TO = {t*10 + o}')
+            print(f'OUT = {o*100 + u*10 + t}')
+            return
+
+    print("No solution found.")
+
+def main():
+    find_solution()
+
+if __name__ == "__main__":
+    main()
+
+
+--- END SLIP 14 ---
+
+--- START SLIP 15: slip 22.ipynb ---
+# Write a Program to Implement Alpha-Beta Pruning using Python
+
+class Node:
+    def __init__(self, value=None, children=None):
+        self.value = value
+        self.children = children if children is not None else []
+
+def alpha_beta(node, depth, alpha, beta, maximizing_player):
+    if depth == 0 or not node.children:
+        return node.value
+
+    if maximizing_player:
+        max_eval = float('-inf')
+        for child in node.children:
+            eval = alpha_beta(child, depth - 1, alpha, beta, False)
+            max_eval = max(max_eval, eval)
+            alpha = max(alpha, eval)
+            if beta <= alpha:
+                break  # Beta cut-off
+        return max_eval
+    else:
+        min_eval = float('inf')
+        for child in node.children:
+            eval = alpha_beta(child, depth - 1, alpha, beta, True)
+            min_eval = min(min_eval, eval)
+            beta = min(beta, eval)
+            if beta <= alpha:
+                break  # Alpha cut-off
+        return min_eval
+
+def main():
+    # Create a simple game tree
+    # The following tree represents a simple structure where leaf nodes have values
+    root = Node(children=[
+        Node(children=[
+            Node(value=3), Node(value=5)
+        ]),
+        Node(children=[
+            Node(value=6), Node(value=9)
+        ]),
+        Node(children=[
+            Node(value=1), Node(value=2)
+        ])
+    ])
+
+    # Define the depth of the tree
+    depth = 3
+
+    # Call the alpha_beta function
+    optimal_value = alpha_beta(root, depth, float('-inf'), float('inf'), True)
+    print(f'Optimal value: {optimal_value}')
+
+if __name__ == "__main__":
+    main()
+
+# Write a Python program to implement Simple Chatbot.
+
+import random
+
+# Simple chatbot responses
+responses = {
+    "greeting": ["Hello! How can I help you today?", "Hi there! What can I do for you?", "Greetings! How may I assist you?"],
+    "weather": ["I'm not sure about the weather, but it's always sunny in my world!", "I can't check the weather, but I hope it's nice outside!", "Weather? I prefer to talk about something else!"],
+    "farewell": ["Goodbye! Have a great day!", "See you later! Take care!", "Farewell! Hope to chat with you again!"],
+    "unknown": ["I'm sorry, I don't understand that.", "Could you please rephrase?", "I'm not sure how to respond to that."]
+}
+
+# Function to respond based on user input
+def get_response(user_input):
+    user_input = user_input.lower()
+    
+    if any(greet in user_input for greet in ["hi", "hello", "hey"]):
+        return random.choice(responses["greeting"])
+    elif "weather" in user_input:
+        return random.choice(responses["weather"])
+    elif any(farewell in user_input for farewell in ["bye", "goodbye", "see you"]):
+        return random.choice(responses["farewell"])
+    else:
+        return random.choice(responses["unknown"])
+
+# Main function to run the chatbot
+def main():
+    print("Welcome to the Simple Chatbot! Type 'exit' to end the conversation.")
+    
+    while True:
+        user_input = input("You: ")
+        
+        if user_input.lower() == "exit":
+            print("Chatbot: Goodbye! Have a great day!")
+            break
+        
+        response = get_response(user_input)
+        print(f"Chatbot: {response}")
+
+if __name__ == "__main__":
+    main()
+
+
+--- END SLIP 15 ---
+
+--- START SLIP 16: slip 23.ipynb ---
+# Write a Program to Implement Tower of Hanoi using Python
+
+def tower_of_hanoi(n, source, destination, auxiliary):
+    if n == 1:
+        print(f"Move disk 1 from {source} to {destination}")
+        return
+    # Move n-1 disks from source to auxiliary, so they are out of the way
+    tower_of_hanoi(n - 1, source, auxiliary, destination)
+    # Move the nth disk from source to destination
+    print(f"Move disk {n} from {source} to {destination}")
+    # Move the n-1 disks that we left on auxiliary to destination
+    tower_of_hanoi(n - 1, auxiliary, destination, source)
+
+def main():
+    n = int(input("Enter the number of disks: "))
+    print("The sequence of moves involved in the Tower of Hanoi are:")
+    tower_of_hanoi(n, 'A', 'C', 'B')  # A, B and C are the names of rods
+
+if __name__ == "__main__":
+    main()
+
+# Write a Python program for the following Cryptarithmetic problems
+# SEND + MORE = MONEY
+
+from itertools import permutations
+
+def is_valid_assignment(s, e, n, d, m, o, r, y):
+    # Calculate the numeric values of SEND, MORE, and MONEY
+    send = s * 1000 + e * 100 + n * 10 + d
+    more = m * 1000 + o * 100 + r * 10 + e
+    money = m * 10000 + o * 1000 + n * 100 + e * 10 + y
+    
+    # Check if the equation SEND + MORE = MONEY holds
+    return (send + more) == money
+
+def find_solution():
+    # Letters involved in the equation
+    letters = 'SENDMORY'
+    
+    # Generate all permutations of the digits 0-9 for the 8 letters
+    for perm in permutations(range(10), len(letters)):
+        # Assign digits to letters
+        s, e, n, d, m, o, r, y = perm
+        
+        # Ensure S and M are not zero (as they are leading digits)
+        if s == 0 or m == 0:
+            continue
+        
+        if is_valid_assignment(s, e, n, d, m, o, r, y):
+            print(f'Solution found:')
+            print(f'S={s}, E={e}, N={n}, D={d}, M={m}, O={o}, R={r}, Y={y}')
+            print(f'SEND = {s*1000 + e*100 + n*10 + d}')
+            print(f'MORE = {m*1000 + o*100 + r*10 + e}')
+            print(f'MONEY = {m * 10000 + o * 1000 + n * 100 + e * 10 + y}')
+            return
+
+    print("No solution found.")
+
+def main():
+    find_solution()
+
+if __name__ == "__main__":
+    main()
+
+
+
+
+--- END SLIP 16 ---
+
+--- START SLIP 17: slip 24.ipynb ---
+# Write a python program to sort the sentence in alphabetical order?
+
+def sort_sentence(sentence):
+    # Split the sentence into words
+    words = sentence.split()
+    # Sort the words in alphabetical order
+    sorted_words = sorted(words)
+    # Join the sorted words back into a sentence
+    sorted_sentence = ' '.join(sorted_words)
+    return sorted_sentence
+
+def main():
+    # Input sentence from the user
+    sentence = input("Enter a sentence: ")
+    sorted_sentence = sort_sentence(sentence)
+    print("Sorted sentence in alphabetical order:")
+    print(sorted_sentence)
+
+if __name__ == "__main__":
+    main()
+
+# Write a Python program for the following Cryptorithmetic problems 
+# CROSS+ROADS = DANGER
+
+from itertools import permutations
+
+def is_valid_assignment(c, r, o, s, a, d, n, g, e):
+    # Calculate the numeric values of CROSS, ROADS, and DANGER
+    cross = c * 10000 + r * 1000 + o * 100 + s * 10 + s
+    roads = r * 10000 + o * 1000 + a * 100 + d * 10 + s
+    danger = d * 100000 + a * 10000 + n * 1000 + g * 100 + e * 10 + r
+    
+    # Check if the equation CROSS + ROADS = DANGER holds
+    return (cross + roads) == danger
+
+def find_solution():
+    # Letters involved in the equation
+    letters = 'CROSSROADEN'
+
+    # Generate all permutations of the digits 0-9 for the 11 letters
+    for perm in permutations(range(10), len(letters)):
+        # Assign digits to letters
+        c, r, o, s, a, d, n, g, e = perm[:9]  # Use only first 9 digits
+        
+        # Ensure C and R are not zero (as they are leading digits)
+        if c == 0 or r == 0:
+            continue
+        
+        if is_valid_assignment(c, r, o, s, a, d, n, g, e):
+            print(f'Solution found:')
+            print(f'C={c}, R={r}, O={o}, S={s}, A={a}, D={d}, N={n}, G={g}, E={e}')
+            print(f'CROSS = {c*10000 + r*1000 + o*100 + s*10 + s}')
+            print(f'ROADS = {r*10000 + o*1000 + a*100 + d*10 + s}')
+            print(f'DANGER = {d*100000 + a*10000 + n*1000 + g*100 + e*10 + r}')
+            return
+
+    print("No solution found.")
+
+def main():
+    find_solution()
+
+if __name__ == "__main__":
+    main()
+
+
+--- END SLIP 17 ---
+
+--- START SLIP 18: slip 25.ipynb ---
+# Build a bot which provides all the information related to you in college
+
+college_info = {
+    "name": "XYZ College",
+    "location": "123 College Ave, City, Country",
+    "history": "Founded in 1990, XYZ College has been a leader in education.",
+    "courses": ["Computer Science", "Business Administration", "Mechanical Engineering"],
+    "admission_requirements": "High school diploma, entrance exam.",
+    "important_dates": {
+        "registration": "August 1, 2024",
+        "exams": "December 15, 2024",
+    },
+    "facilities": ["Library", "Computer Lab", "Sports Complex"],
+    "events": ["Annual Day", "Tech Fest", "Cultural Fest"],
+    "faq": {
+        "What is the college's ranking?": "XYZ College is ranked in the top 100 colleges in the country.",
+        "Does the college offer scholarships?": "Yes, we offer various scholarships based on merit and need."
+    }
+}
+
+# Define the function to handle user queries
+def college_bot(query):
+    query = query.lower()
+    
+    if "name" in query:
+        return college_info["name"]
+    elif "location" in query:
+        return college_info["location"]
+    elif "history" in query:
+        return college_info["history"]
+    elif "courses" in query:
+        return ", ".join(college_info["courses"])
+    elif "admission" in query:
+        return college_info["admission_requirements"]
+    elif "important dates" in query:
+        return f"Registration: {college_info['important_dates']['registration']}, Exams: {college_info['important_dates']['exams']}"
+    elif "facilities" in query:
+        return ", ".join(college_info["facilities"])
+    elif "events" in query:
+        return ", ".join(college_info["events"])
+    elif "faq" in query:
+        return "\n".join([f"{q}: {a}" for q, a in college_info["faq"].items()])
+    else:
+        return "I'm sorry, I didn't understand that. Please ask about college name, location, courses, etc."
+
+# Main interaction loop
+while True:
+    user_input = input("Ask me anything about the college (type 'exit' to stop): ")
+    if user_input.lower() == 'exit':
+        print("Thank you for using the college information bot!")
+        break
+    response = college_bot(user_input)
+    print(response)
+
+# Write python program to solve 8 puzzle problem using A* algorithm
+
+import heapq
+
+# Define the goal state
+GOAL_STATE = (1, 2, 3, 4, 5, 6, 7, 8, 0)
+
+class PuzzleState:
+    def __init__(self, board, zero_pos, moves=0, previous=None):
+        self.board = board
+        self.zero_pos = zero_pos
+        self.moves = moves
+        self.previous = previous
+        self.priority = self.moves + self.manhattan_distance()
+
+    def manhattan_distance(self):
+        distance = 0
+        for i in range(3):
+            for j in range(3):
+                value = self.board[i * 3 + j]
+                if value != 0:
+                    target_x = (value - 1) // 3
+                    target_y = (value - 1) % 3
+                    distance += abs(target_x - i) + abs(target_y - j)
+        return distance
+
+    def get_neighbors(self):
+        neighbors = []
+        x, y = self.zero_pos
+        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+        
+        for dx, dy in directions:
+            new_x, new_y = x + dx, y + dy
+            if 0 <= new_x < 3 and 0 <= new_y < 3:
+                new_board = list(self.board)
+                new_board[x * 3 + y], new_board[new_x * 3 + new_y] = new_board[new_x * 3 + new_y], new_board[x * 3 + y]
+                neighbors.append(PuzzleState(tuple(new_board), (new_x, new_y), self.moves + 1, self))
+        return neighbors
+
+    def __lt__(self, other):
+        return self.priority < other.priority
+
+def a_star_search(start_board):
+    start_zero_pos = start_board.index(0)
+    start_state = PuzzleState(tuple(start_board), (start_zero_pos // 3, start_zero_pos % 3))
+
+    open_set = []
+    heapq.heappush(open_set, start_state)
+    closed_set = set()
+
+    while open_set:
+        current_state = heapq.heappop(open_set)
+
+        if current_state.board == GOAL_STATE:
+            return reconstruct_path(current_state)
+
+        closed_set.add(current_state.board)
+
+        for neighbor in current_state.get_neighbors():
+            if neighbor.board not in closed_set:
+                heapq.heappush(open_set, neighbor)
+
+    return None  # If no solution is found
+
+def reconstruct_path(state):
+    path = []
+    while state:
+        path.append(state.board)
+        state = state.previous
+    return path[::-1]  # Reverse the path to get the solution from start to goal
+
+def print_solution(solution):
+    for step in solution:
+        print("Board:")
+        for i in range(3):
+            print(step[i * 3:(i + 1) * 3])
+        print()
+
+def main():
+    # Example initial state
+    start_board = [1, 2, 3, 4, 0, 5, 7, 8, 6]  # 0 represents the empty space
+
+    solution = a_star_search(start_board)
+
+    if solution:
+        print("Solution found:")
+        print_solution(solution)
+    else:
+        print("No solution exists.")
+
+if __name__ == "__main__":
+    main()
+
+
+
+
+--- END SLIP 18 ---
+
+--- START SLIP 19: slip 3.ipynb ---
+# Write a python program to remove punctuations from the given string?
+
+import string
+
+def remove_punctuation(input_string):
+    # Create a translation table that maps punctuation to None
+    translator = str.maketrans('', '', string.punctuation)
+    
+    # Use the translation table to remove punctuation from the string
+    return input_string.translate(translator)
+
+# Example input
+input_string = "Hello, World! How's it going? Let's remove: punctuation."
+clean_string = remove_punctuation(input_string)
+
+print(f"Original String: {input_string}")
+print(f"String without punctuation: {clean_string}")
+
+# Depth First Search (DFS) implementation
+def dfs(graph, start, goal, visited=None, path=None):
+    if visited is None:
+        visited = set()  # Set to keep track of visited nodes
+    if path is None:
+        path = []  # List to maintain the path
+    
+    visited.add(start)
+    path.append(start)
+
+    print(f"Visited: {start}")
+
+    # If goal is reached, return the current path
+    if start == goal:
+        return path
+
+    # Recur for all the vertices adjacent to this vertex
+    for neighbor in graph[start]:
+        if neighbor not in visited:
+            result = dfs(graph, neighbor, goal, visited, path)
+            if result:
+                return result
+
+    # If no path found, backtrack
+    path.pop()
+    return None
+
+# Graph input using adjacency list representation
+graph = {
+    1: [2, 3, 4],
+    2: [1, 4, 5],
+    3: [1, 4],
+    4: [1, 2, 3, 7],
+    5: [6, 3, 7],
+    6: [5 , 7],
+    7: [6 , 5, 4],
+}
+
+# Input: Initial node (2), Goal node (7)
+start_node = 2
+goal_node = 7
+
+# Perform DFS
+dfs_path = dfs(graph, start_node, goal_node)
+
+print(f"\nDFS path to reach node {goal_node}: {dfs_path}")
+
+
+--- END SLIP 19 ---
+
+--- START SLIP 20: slip 4.ipynb ---
+# Write a program to implement Hangman game using python.
+# Description:
+# Hangman is a classic word-guessing game. The user should guess the word correctly by
+# entering alphabets of the user choice. The Program will get input as single alphabet from the
+# user and it will matchmaking with the alphabets in the original
+
+import random
+
+def hangman():
+    words = ['python', 'hangman', 'programming', 'challenge', 'development']
+    chosen_word = random.choice(words)
+    guessed_letters = []
+    attempts = 6
+    word_completion = '_' * len(chosen_word)
+    
+    print("Welcome to Hangman!")
+    
+    while attempts > 0:
+        print("\nWord to guess: " + ' '.join(word_completion))
+        print(f"Guessed letters: {' '.join(guessed_letters)}")
+        print(f"Attempts remaining: {attempts}")
+
+        guess = input("Please enter a single letter: ").lower()
+
+        if len(guess) != 1 or not guess.isalpha():
+            print("Invalid input. Please enter a single alphabet.")
+            continue
+        
+        if guess in guessed_letters:
+            print("You've already guessed that letter. Try again.")
+            continue
+        
+        guessed_letters.append(guess)
+
+        if guess in chosen_word:
+            print(f"Good guess! '{guess}' is in the word.")
+            word_completion = ''.join([guess if chosen_word[i] == guess else word_completion[i] for i in range(len(chosen_word))])
+        else:
+            print(f"Sorry, '{guess}' is not in the word.")
+            attempts -= 1
+
+        if '_' not in word_completion:
+            print(f"\nCongratulations! You've guessed the word: {chosen_word}")
+            break
+    else:
+        print(f"\nGame over! The word was: {chosen_word}")
+
+if __name__ == "__main__":
+    hangman()
+
+
+
+# Write a Python program to implement Breadth First Search algorithm. Refer the following graph as an Input for the program.[Initial node=1,Goal node=8]
+
+from collections import deque
+
+def bfs(graph, start, goal):
+    visited = set()  # Set to keep track of visited nodes
+    queue = deque([(start, [start])])  # Queue to maintain paths
+
+    while queue:
+        current, path = queue.popleft()  # Get the current node and path
+
+        print(f"Visited: {current}")
+
+        # If goal is reached, return the current path
+        if current == goal:
+            return path
+
+        visited.add(current)
+
+        # Enqueue all unvisited neighbors
+        for neighbor in graph[current]:
+            if neighbor not in visited:
+                queue.append((neighbor, path + [neighbor]))
+
+    return None  # Return None if no path is found
+
+# Graph input using adjacency list representation
+graph = {
+    1: [2, 3],
+    2: [1, 4, 5],
+    3: [1, 6, 7],
+    4: [2, 8],
+    5: [2, 8],
+    6: [3, 8],
+    7: [3, 8],
+    8: [4, 5, 6, 7]
+}
+
+# Input: Initial node (1), Goal node (8)
+start_node = 1
+goal_node = 8
+
+# Perform BFS
+bfs_path = bfs(graph, start_node, goal_node)
+
+print(f"\nBFS path to reach node {goal_node}: {bfs_path}")
+
+
+
+
+--- END SLIP 20 ---
+
+--- START SLIP 21: slip 5.ipynb ---
+# Write a python program to implement Lemmatization using NLTK
+
+import nltk
+from nltk.stem import WordNetLemmatizer
+
+# Uncomment the following lines if you haven't downloaded the WordNet data yet
+# nltk.download('punkt')
+# nltk.download('wordnet')
+
+def lemmatize_text(text):
+    # Initialize the lemmatizer
+    lemmatizer = WordNetLemmatizer()
+    
+    # Tokenize the input text
+    words = nltk.word_tokenize(text)
+    
+    # Lemmatize each word and store the results
+    lemmatized_words = [lemmatizer.lemmatize(word) for word in words]
+    
+    return lemmatized_words
+
+if __name__ == "__main__":
+    input_text = "The striped bats are hanging on their feet for best"
+    print("Input text:", input_text)
+    
+    lemmatized_output = lemmatize_text(input_text)
+    print("Lemmatized output:", lemmatized_output)
+
+# Write a Python program to implement Breadth First Search algorithm. Refer the following graph as an Input for the program.[Initial node=1,Goal node=8]
+
+from collections import deque
+
+def bfs(graph, start, goal):
+    visited = set()  # Set to keep track of visited nodes
+    queue = deque([(start, [start])])  # Queue to maintain paths
+
+    while queue:
+        current, path = queue.popleft()  # Get the current node and path
+
+        print(f"Visited: {current}")
+
+        # If goal is reached, return the current path
+        if current == goal:
+            return path
+
+        visited.add(current)
+
+        # Enqueue all unvisited neighbors
+        for neighbor in graph[current]:
+            if neighbor not in visited:
+                queue.append((neighbor, path + [neighbor]))
+
+    return None  # Return None if no path is found
+
+# Graph input using adjacency list representation
+graph = {
+    1: [2, 4],
+    2: [3],
+    3: [4, 6, 5],
+    4: [2],
+    5: [7, 8],
+    6: [8],
+    7: [8],
+    8: []
+}
+
+# Input: Initial node (1), Goal node (8)
+start_node = 1
+goal_node = 8
+
+# Perform BFS
+bfs_path = bfs(graph, start_node, goal_node)
+
+print(f"\nBFS path to reach node {goal_node}: {bfs_path}")
+
+
+--- END SLIP 21 ---
+
+--- START SLIP 22: slip 6.ipynb ---
+# Write a python program to remove stop words for a given passage from a text file using NLTK?.
+
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+
+
+
+# Function to remove stop words from a text
+def remove_stop_words(file_path):
+    # Load stop words
+    stop_words = set(stopwords.words('english'))
+
+    # Read the passage from the text file
+    with open(file_path, 'r') as file:
+        text = file.read()
+
+    # Tokenize the text
+    words = word_tokenize(text)
+
+    # Filter out stop words
+    filtered_words = [word for word in words if word.lower() not in stop_words]
+
+    # Join the filtered words back into a string
+    filtered_text = ' '.join(filtered_words)
+
+    return filtered_text
+
+# Specify the path to your text file
+file_path = 'text.txt'  # Update this path
+
+# Remove stop words and print the result
+result = remove_stop_words(file_path)
+print("Filtered Text:")
+print(result)
+
+# Write a Python program to implement Breadth First Search algorithm. Refer the following graph as an Input for the program.[Initial node=1,Goal node=7]
+
+from collections import deque
+
+def bfs(graph, start, goal):
+    visited = set()  # Set to keep track of visited nodes
+    queue = deque([(start, [start])])  # Queue to maintain paths
+
+    while queue:
+        current, path = queue.popleft()  # Get the current node and path
+
+        print(f"Visited: {current}")
+
+        # If goal is reached, return the current path
+        if current == goal:
+            return path
+
+        visited.add(current)
+
+        # Enqueue all unvisited neighbors
+        for neighbor in graph[current]:
+            if neighbor not in visited:
+                queue.append((neighbor, path + [neighbor]))
+
+    return None  # Return None if no path is found
+
+# Graph input using adjacency list representation
+graph = {
+    1: [2, 3, 4],
+    2: [1, 4, 5],
+    3: [1, 4],
+    4: [1, 2, 3, 7],
+    5: [6, 3, 7],
+    6: [5 , 7],
+    7: [6 , 5, 4],
+}
+
+# Input: Initial node (1), Goal node (8)
+start_node = 1
+goal_node = 7
+
+# Perform BFS
+bfs_path = bfs(graph, start_node, goal_node)
+
+print(f"\nBFS path to reach node {goal_node}: {bfs_path}")
+
+
+--- END SLIP 22 ---
+
+--- START SLIP 23: slip 7.ipynb ---
+# Write a python program implement tic-tac-toe using alpha beeta pruning
+
+import math
+
+# Constants for players
+PLAYER_X = 'X'
+PLAYER_O = 'O'
+EMPTY = ' '
+
+# Function to print the current board
+def print_board(board):
+    chars = {PLAYER_X: 'X', PLAYER_O: 'O', EMPTY: ' '}
+    print("\nCurrent Board:")
+    for row in board:
+        for cell in row:
+            ch = chars[cell]  # Use the character mapping
+            print(f'| {ch} |', end='')  # Print the cell with boundaries
+        print('\n' + '---------------')  # Print row separator
+    print('===============')  # Print board footer
+
+# Check if the game is over and return the result
+def check_winner(board):
+    # Check rows, columns, and diagonals for a win
+    for i in range(3):
+        if board[i][0] == board[i][1] == board[i][2] != EMPTY:
+            return board[i][0]
+        if board[0][i] == board[1][i] == board[2][i] != EMPTY:
+            return board[0][i]
+
+    if board[0][0] == board[1][1] == board[2][2] != EMPTY:
+        return board[0][0]
+    if board[0][2] == board[1][1] == board[2][0] != EMPTY:
+        return board[0][2]
+
+    # Check for draw
+    if all(cell != EMPTY for row in board for cell in row):
+        return 'Draw'
+
+    return None  # Game is not over
+
+# Alpha-Beta pruning algorithm
+def alpha_beta(board, depth, alpha, beta, is_maximizing):
+    winner = check_winner(board)
+    if winner == PLAYER_X:
+        return -10 + depth  # X (the human player) is maximizing
+    elif winner == PLAYER_O:
+        return 10 - depth  # O (the computer) is minimizing
+    elif winner == 'Draw':
+        return 0
+
+    if is_maximizing:
+        max_eval = -math.inf
+        for i in range(3):
+            for j in range(3):
+                if board[i][j] == EMPTY:
+                    board[i][j] = PLAYER_O
+                    eval = alpha_beta(board, depth + 1, alpha, beta, False)
+                    board[i][j] = EMPTY
+                    max_eval = max(max_eval, eval)
+                    alpha = max(alpha, eval)
+                    if beta <= alpha:
+                        break
+        return max_eval
+    else:
+        min_eval = math.inf
+        for i in range(3):
+            for j in range(3):
+                if board[i][j] == EMPTY:
+                    board[i][j] = PLAYER_X
+                    eval = alpha_beta(board, depth + 1, alpha, beta, True)
+                    board[i][j] = EMPTY
+                    min_eval = min(min_eval, eval)
+                    beta = min(beta, eval)
+                    if beta <= alpha:
+                        break
+        return min_eval
+
+# Function for the computer to make a move
+def computer_move(board):
+    best_move = (-1, -1)
+    best_value = -math.inf
+
+    for i in range(3):
+        for j in range(3):
+            if board[i][j] == EMPTY:
+                board[i][j] = PLAYER_O
+                move_value = alpha_beta(board, 0, -math.inf, math.inf, False)
+                board[i][j] = EMPTY
+                if move_value > best_value:
+                    best_value = move_value
+                    best_move = (i, j)
+
+    board[best_move[0]][best_move[1]] = PLAYER_O
+    print(f"Computer placed 'O' in position {best_move[0] * 3 + best_move[1] + 1}.")
+
+# Function for the human player's move
+def player_move(board):
+    while True:
+        try:
+            move = int(input("Enter your move (1-9): ")) - 1
+            row, col = divmod(move, 3)
+            if board[row][col] == EMPTY:
+                board[row][col] = PLAYER_X
+                break
+            else:
+                print("This position is already taken. Try again.")
+        except (ValueError, IndexError):
+            print("Invalid move. Please enter a number between 1 and 9.")
+
+# Main game loop
+def main():
+    board = [[EMPTY] * 3 for _ in range(3)]
+    print("Welcome to Tic-Tac-Toe!")
+    print_board(board)
+
+    while True:
+        player_move(board)
+        print_board(board)
+        if check_winner(board):
+            break
+
+        computer_move(board)
+        print_board(board)
+        if check_winner(board):
+            break
+
+    result = check_winner(board)
+    if result == PLAYER_X:
+        print("Congratulations! You win!")
+    elif result == PLAYER_O:
+        print("Computer wins! Better luck next time.")
+    else:
+        print("It's a draw! Well played!")
+
+if __name__ == "__main__":
+    main()
+
+# Write a Python program to implement Simple Chatbot.
+
+import random
+
+# Simple chatbot responses
+responses = {
+    "greeting": ["Hello! How can I help you today?", "Hi there! What can I do for you?", "Greetings! How may I assist you?"],
+    "weather": ["I'm not sure about the weather, but it's always sunny in my world!", "I can't check the weather, but I hope it's nice outside!", "Weather? I prefer to talk about something else!"],
+    "farewell": ["Goodbye! Have a great day!", "See you later! Take care!", "Farewell! Hope to chat with you again!"],
+    "unknown": ["I'm sorry, I don't understand that.", "Could you please rephrase?", "I'm not sure how to respond to that."]
+}
+
+# Function to respond based on user input
+def get_response(user_input):
+    user_input = user_input.lower()
+    
+    if any(greet in user_input for greet in ["hi", "hello", "hey"]):
+        return random.choice(responses["greeting"])
+    elif "weather" in user_input:
+        return random.choice(responses["weather"])
+    elif any(farewell in user_input for farewell in ["bye", "goodbye", "see you"]):
+        return random.choice(responses["farewell"])
+    else:
+        return random.choice(responses["unknown"])
+
+# Main function to run the chatbot
+def main():
+    print("Welcome to the Simple Chatbot! Type 'exit' to end the conversation.")
+    
+    while True:
+        user_input = input("You: ")
+        
+        if user_input.lower() == "exit":
+            print("Chatbot: Goodbye! Have a great day!")
+            break
+        
+        response = get_response(user_input)
+        print(f"Chatbot: {response}")
+
+if __name__ == "__main__":
+    main()
+
+
+
+--- END SLIP 23 ---
+
+--- START SLIP 24: slip 8.ipynb ---
+# Write a Python program to accept a string. Find and print the number of upper case alphabets and lower case alphabets.
+
+def count_case(s):
+    upper_case_count = 0
+    lower_case_count = 0
+
+    for char in s:
+        if char.isupper():
+            upper_case_count += 1
+        elif char.islower():
+            lower_case_count += 1
+
+    return upper_case_count, lower_case_count
+
+def main():
+    # Accepting input from the user
+    user_input = input("Enter a string: ")
+    
+    # Counting uppercase and lowercase letters
+    upper_count, lower_count = count_case(user_input)
+    
+    # Printing the results
+    print(f"Number of uppercase letters: {upper_count}")
+    print(f"Number of lowercase letters: {lower_count}")
+
+if __name__ == "__main__":
+    main()
+
+
+# Write a Python program to solve tic-tac-toe problem.
+
+import math
+
+# Constants for players
+PLAYER_X = 'X'
+PLAYER_O = 'O'
+EMPTY = ' '
+
+# Function to print the current board
+def print_board(board):
+    chars = {PLAYER_X: 'X', PLAYER_O: 'O', EMPTY: ' '}
+    print("\nCurrent Board:")
+    for row in board:
+        for cell in row:
+            ch = chars[cell]  # Use the character mapping
+            print(f'| {ch} |', end='')  # Print the cell with boundaries
+        print('\n' + '---------------')  # Print row separator
+    print('===============')  # Print board footer
+
+# Check if the game is over and return the result
+def check_winner(board):
+    # Check rows, columns, and diagonals for a win
+    for i in range(3):
+        if board[i][0] == board[i][1] == board[i][2] != EMPTY:
+            return board[i][0]
+        if board[0][i] == board[1][i] == board[2][i] != EMPTY:
+            return board[0][i]
+
+    if board[0][0] == board[1][1] == board[2][2] != EMPTY:
+        return board[0][0]
+    if board[0][2] == board[1][1] == board[2][0] != EMPTY:
+        return board[0][2]
+
+    # Check for draw
+    if all(cell != EMPTY for row in board for cell in row):
+        return 'Draw'
+
+    return None  # Game is not over
+
+# Function for a player to make a move
+def player_move(board, player):
+    while True:
+        try:
+            move = int(input(f"Player {player}, enter your move (1-9): ")) - 1
+            row, col = divmod(move, 3)
+            if board[row][col] == EMPTY:
+                board[row][col] = player
+                break
+            else:
+                print("This position is already taken. Try again.")
+        except (ValueError, IndexError):
+            print("Invalid move. Please enter a number between 1 and 9.")
+
+# Main game loop
+def main():
+    board = [[EMPTY] * 3 for _ in range(3)]
+    print("Welcome to Tic-Tac-Toe!")
+    print_board(board)
+
+    current_player = PLAYER_X  # Start with Player X
+
+    while True:
+        player_move(board, current_player)
+        print_board(board)
+        winner = check_winner(board)
+        if winner:
+            break
+        # Switch players
+        current_player = PLAYER_O if current_player == PLAYER_X else PLAYER_X
+
+    if winner == PLAYER_X:
+        print("Congratulations! Player X wins!")
+    elif winner == PLAYER_O:
+        print("Congratulations! Player O wins!")
+    else:
+        print("It's a draw! Well played!")
+
+if __name__ == "__main__":
+    main()
+
+
+
+--- END SLIP 24 ---
+
+--- START SLIP 25: slip 9.ipynb ---
+# Write python program to solve 8 puzzle problem using A* algorithm
+
+import heapq
+
+# Define the goal state
+GOAL_STATE = (1, 2, 3, 4, 5, 6, 7, 8, 0)
+
+class PuzzleState:
+    def __init__(self, board, zero_pos, moves=0, previous=None):
+        self.board = board
+        self.zero_pos = zero_pos
+        self.moves = moves
+        self.previous = previous
+        self.priority = self.moves + self.manhattan_distance()
+
+    def manhattan_distance(self):
+        distance = 0
+        for i in range(3):
+            for j in range(3):
+                value = self.board[i * 3 + j]
+                if value != 0:
+                    target_x = (value - 1) // 3
+                    target_y = (value - 1) % 3
+                    distance += abs(target_x - i) + abs(target_y - j)
+        return distance
+
+    def get_neighbors(self):
+        neighbors = []
+        x, y = self.zero_pos
+        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+        
+        for dx, dy in directions:
+            new_x, new_y = x + dx, y + dy
+            if 0 <= new_x < 3 and 0 <= new_y < 3:
+                new_board = list(self.board)
+                new_board[x * 3 + y], new_board[new_x * 3 + new_y] = new_board[new_x * 3 + new_y], new_board[x * 3 + y]
+                neighbors.append(PuzzleState(tuple(new_board), (new_x, new_y), self.moves + 1, self))
+        return neighbors
+
+    def __lt__(self, other):
+        return self.priority < other.priority
+
+def a_star_search(start_board):
+    start_zero_pos = start_board.index(0)
+    start_state = PuzzleState(tuple(start_board), (start_zero_pos // 3, start_zero_pos % 3))
+
+    open_set = []
+    heapq.heappush(open_set, start_state)
+    closed_set = set()
+
+    while open_set:
+        current_state = heapq.heappop(open_set)
+
+        if current_state.board == GOAL_STATE:
+            return reconstruct_path(current_state)
+
+        closed_set.add(current_state.board)
+
+        for neighbor in current_state.get_neighbors():
+            if neighbor.board not in closed_set:
+                heapq.heappush(open_set, neighbor)
+
+    return None  # If no solution is found
+
+def reconstruct_path(state):
+    path = []
+    while state:
+        path.append(state.board)
+        state = state.previous
+    return path[::-1]  # Reverse the path to get the solution from start to goal
+
+def print_solution(solution):
+    for step in solution:
+        print("Board:")
+        for i in range(3):
+            print(step[i * 3:(i + 1) * 3])
+        print()
+
+def main():
+    # Example initial state
+    start_board = [1, 2, 3, 4, 0, 5, 7, 8, 6]  # 0 represents the empty space
+
+    solution = a_star_search(start_board)
+
+    if solution:
+        print("Solution found:")
+        print_solution(solution)
+    else:
+        print("No solution exists.")
+
+if __name__ == "__main__":
+    main()
+
+
+# Write a Python program to solve water jug problem. 2 jugs with capacity 5 gallon and 7 gallon are given with unlimited water supply respectively. The target to achieve is 4 gallon of water in second jug.
+
+from collections import deque
+
+# State is represented as (amount in 5-gallon jug, amount in 7-gallon jug)
+def water_jug_problem(capacity1, capacity2, target):
+    # Initialize a queue for BFS and a set to keep track of visited states
+    queue = deque()
+    visited = set()
+
+    # Start with both jugs empty
+    initial_state = (0, 0)
+    queue.append((initial_state, []))  # Append initial state and path
+    visited.add(initial_state)
+
+    while queue:
+        (jug1, jug2), path = queue.popleft()
+        path = path + [(jug1, jug2)]  # Add the current state to the path
+
+        # Check if we reached the target
+        if jug2 == target:
+            return path
+
+        # Possible actions
+        actions = [
+            (capacity1, jug2),  # Fill the 5-gallon jug
+            (jug1, capacity2),  # Fill the 7-gallon jug
+            (0, jug2),          # Empty the 5-gallon jug
+            (jug1, 0),          # Empty the 7-gallon jug
+            (min(jug1 + jug2, capacity1), jug2 - (min(jug1 + jug2, capacity1) - jug1)),  # Pour 7-gallon into 5-gallon
+            (jug1 - (min(jug1 + jug2, capacity2) - jug2), min(jug1 + jug2, capacity2))   # Pour 5-gallon into 7-gallon
+        ]
+
+        # Process each action
+        for new_jug1, new_jug2 in actions:
+            new_state = (new_jug1, new_jug2)
+            if new_state not in visited:
+                visited.add(new_state)
+                queue.append((new_state, path))
+
+    return None  # Return None if no solution is found
+
+def print_solution(solution):
+    if solution:
+        print("Steps to achieve target:")
+        for step in solution:
+            print(f"4-gallon jug: {step[0]}, 3-gallon jug: {step[1]}")
+    else:
+        print("No solution exists.")
+
+def main():
+    capacity1 = 4  # Capacity of the first jug
+    capacity2 = 3  # Capacity of the second jug
+    target = 2     # Target amount in the second jug
+
+    solution = water_jug_problem(capacity1, capacity2, target)
+    print_solution(solution)
+
+if __name__ == "__main__":
+    main()
+
+
+
+--- END SLIP 25 ---
+
